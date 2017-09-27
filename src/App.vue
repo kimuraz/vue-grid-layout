@@ -33,7 +33,7 @@
             <br/>
             <grid-layout
                     :layout="layout"
-                    :col-num="12"
+                    :col-num="11"
                     :row-height="rowHeight"
                     :is-draggable="draggable"
                     :is-resizable="resizable"
@@ -41,13 +41,9 @@
                     :use-css-transforms="true"
             >
                 <grid-item v-for="item in layout" :key="item.i"
-                           :x="item.x"
-                           :y="item.y"
-                           :w="item.w"
-                           :h="item.h"
+                           :positioningData = "item"
                            :min-w="2"
                            :min-h="2"
-                           :i="item.i"
                            @resize="resize"
                            @move="move"
                            @resized="resized"
@@ -134,13 +130,22 @@
                 resizable: true,
                 rowHeight: 30,
                 colNum: 0,
-                index: 0
+                index: 0,
             }
         },
         mounted: function () {
             this.index = this.layout.length;
         },
         methods: {
+            getPositioning(item) {
+              return  {
+                 x: item.x,
+                 y: item.y,
+                 w: item.w,
+                 h: item.h,
+                 i: item.i,
+              };
+            },
             clicked: function() {
                 window.alert("CLICK!");
             },

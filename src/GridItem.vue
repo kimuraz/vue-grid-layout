@@ -140,24 +140,9 @@
                 required: false,
                 default: Infinity
             },
-            x: {
-                type: Number,
-                required: true
-            },
-            y: {
-                type: Number,
-                required: true
-            },
-            w: {
-                type: Number,
-                required: true
-            },
-            h: {
-                type: Number,
-                required: true
-            },
-            i: {
-                required: true
+            positioningData: {
+                type: Object,
+                required: true,
             },
             dragIgnoreFrom: {
                 type: String,
@@ -205,6 +190,11 @@
                 previousH: null,
                 previousX: null,
                 previousY: null,
+                x: 0,
+                y: 0,
+                w: 0,
+                h: 0,
+                i: 0,
             }
         },
         created () {
@@ -286,6 +276,7 @@
             }
             this.useCssTransforms = this.$parent.useCssTransforms;
             this.createStyle();
+            this.setPositioning();
         },
         watch: {
             isDraggable: function () {
@@ -353,18 +344,28 @@
             containerWidth: function () {
                 this.createStyle();
             },
-            x: function () {
+            positioningData: {
+              deep: true,
+              handler: function () {
                 this.createStyle();
+                this.setPositioning();
+              },
+            },
+            x: function () {
+              this.positioningData.x = this.x;  
             },
             y: function () {
-                this.createStyle();
-            },
-            h: function () {
-                this.createStyle();
+              this.positioningData.y = this.y;  
             },
             w: function () {
-                this.createStyle();
-            }
+              this.positioningData.w = this.w;  
+            },
+            h: function () {
+              this.positioningData.h = this.h;  
+            },
+            i: function () {
+              this.positioningData.i = this.i;  
+            },
         },
         computed: {
             resizableHandleClass() {
@@ -376,6 +377,13 @@
             }
         },
         methods: {
+            setPositioning: function() {
+              this.x = this.positioningData.x;
+              this.y = this.positioningData.y;
+              this.w = this.positioningData.w;
+              this.h = this.positioningData.h;
+              this.i = this.positioningData.i;
+            },
             createStyle: function () {
                 if (this.x + this.w > this.cols) {
                     this.x = 0;
@@ -417,7 +425,6 @@
                     }
                 }
                 this.style = style;
-
             },
             handleResize: function (event) {
                 const position = getControlPosition(event);

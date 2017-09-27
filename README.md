@@ -115,11 +115,8 @@ or include the script in your html (download from [releases](https://github.com/
     >
 
         <grid-item v-for="item in layout"
-                   :x="item.x"
-                   :y="item.y"
-                   :w="item.w"
-                   :h="item.h"
-                   :i="item.i">
+                   :positioningData="item"
+                    >
             {{item.i}}
         </grid-item>
     </grid-layout>
